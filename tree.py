@@ -1,5 +1,7 @@
 import dataclasses as dc
 from lexer import Token
+from parser import parse_expr
+
 # a node class
 class Node:
     
@@ -172,6 +174,14 @@ class AssignVar(Node):
         self.context.setattr(self.name.value, self.value.eval())
         return self.context
 
+ @dc.dataclass
+class Block(Node):
+    body: list[Token]
+    context: Context
+    
+    def eval(self):
+        return parse_expr(self.body, self.context)
+    
 
 
 
